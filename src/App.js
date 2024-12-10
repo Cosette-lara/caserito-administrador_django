@@ -1,22 +1,28 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import AdminNavbar from './components/AdminNavbar';
-import DashboardPage from './pages/DashboardPage';
+import LoginPage from './pages/LoginPage';
 import UsuariosPage from './pages/UsuariosPage';
 import RestaurantesPage from './pages/RestaurantesPage';
-import MenusPage from './pages/MenusPage';
 import RolesPage from './pages/RolesPage';
 
 const App = () => {
+  const token = localStorage.getItem('token'); 
+
   return (
     <Router>
-      <AdminNavbar />
+      {token && <AdminNavbar />} 
       <Routes>
-        <Route path="/" element={<DashboardPage />} />
-        <Route path="/usuarios" element={<UsuariosPage />} />
-        <Route path="/restaurantes" element={<RestaurantesPage />} />
-        <Route path="/menus" element={<MenusPage />} />
-        <Route path="/roles" element={<RolesPage />} />
+        <Route path="/login-administrador" element={<LoginPage />} />
+        {token ? (
+          <>
+            <Route path="/usuarios" element={<UsuariosPage />} />
+            <Route path="/restaurantes" element={<RestaurantesPage />} />
+            <Route path="/roles" element={<RolesPage />} />
+          </>
+        ) : (
+          <Route path="*" element={<LoginPage />} /> 
+        )}
       </Routes>
     </Router>
   );
